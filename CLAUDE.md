@@ -13,6 +13,7 @@
 
 ### סקילים (`~/.claude/skills/`)
 - `new-customer` — הגדרת לקוח חדש, יוצר CLAUDE.md מלא
+- `dream-customer` — בניית פרופיל אווטאר מלא (avatar.md) — מהקלטות או מ-9 שאלות
 - `facebook-ad-copywriter` — כתיבת קופי מלא למודעות פייסבוק
 - `competitor-research` — מחקר מתחרים מ-Facebook Ads Library
 - `creative-ai` — יצירת קריאייטיבים עם KIE AI

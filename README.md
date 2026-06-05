@@ -17,6 +17,7 @@ bash install.sh
 | סקיל | שימוש |
 |------|-------|
 | `/new-customer` | הגדרת לקוח חדש — יוצר CLAUDE.md מלא |
+| `/dream-customer` | בניית פרופיל אווטאר מלא (avatar.md) לפני כתיבת קופי |
 | `/agency-setup` | הגדרת תיקיית סוכנות |
 | `/facebook-ad-copywriter` | כתיבת קופי מלא למודעות פייסבוק |
 | `/competitor-research` | מחקר מתחרים מ-Facebook Ads Library |

@@ -5,7 +5,7 @@
 DEST="$HOME/.claude/skills"
 mkdir -p "$DEST"
 
-SKILLS=(new-customer agency-setup facebook-ad-copywriter competitor-research creative-ai analytics facebook-campaign)
+SKILLS=(new-customer dream-customer agency-setup facebook-ad-copywriter competitor-research creative-ai analytics facebook-campaign)
 
 echo "מתקין סקילים לקמפיינר 10X..."
 echo ""
