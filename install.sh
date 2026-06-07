@@ -7,7 +7,7 @@ AGENTS_DEST="$HOME/.claude/agents"
 mkdir -p "$SKILLS_DEST"
 mkdir -p "$AGENTS_DEST"
 
-SKILLS=(new-customer dream-customer agency-setup fb-copywriter competitor-research creative-ai analytics facebook-campaign skill-creator)
+SKILLS=(new-customer dream-customer agency-setup meta-connect fb-copywriter competitor-research creative-ai analytics facebook-campaign skill-creator)
 AGENTS=(qa-campaign copy-reviewer)
 
 echo "מתקין סקילים לקמפיינר 10X..."
