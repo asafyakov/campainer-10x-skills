@@ -8,7 +8,7 @@ mkdir -p "$SKILLS_DEST"
 mkdir -p "$AGENTS_DEST"
 
 MIFGASH_1=(agency-setup meta-connect)
-MIFGASH_2=(new-customer dream-customer fb-copywriter competitor-research creative-ai facebook-campaign skill-creator)
+MIFGASH_2=(new-customer dream-customer fb-copywriter ad-copywriter competitor-research creative-ai facebook-campaign skill-creator)
 AGENTS=(qa-campaign copy-reviewer)
 
 echo "מתקין סקילים — מפגש 1..."
