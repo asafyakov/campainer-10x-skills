@@ -1,6 +1,6 @@
 ---
 name: new-customer
-description: קליטת לקוח חדש לסוכנות — ראיון אינטראקטיבי 17 שאלות, סריקת חומרים, בניית CLAUDE.md עם חיבור META. הלקוח יוצא מוכן ל-/campaign-workflow ול-/agency-monitor.
+description: [קמפיינר 10X] קליטת לקוח חדש לסוכנות — ראיון אינטראקטיבי 17 שאלות, סריקת חומרים, בניית CLAUDE.md עם חיבור META. הלקוח יוצא מוכן ל-/campaign-workflow ול-/agency-monitor.
 allowed-tools: Bash, Read, Write, Edit, WebFetch
 argument-hint: "[שם הלקוח]"
 ---
