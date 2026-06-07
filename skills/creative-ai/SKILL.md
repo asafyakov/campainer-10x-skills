@@ -241,7 +241,7 @@ import sys, json, time, requests
 from pathlib import Path
 
 sys.path.insert(0, str(Path.home() / ".claude"))
-from kie_config import KIE_API_KEY
+from master_keys import KIE_API_KEY
 
 headers = {
     'Authorization': f'Bearer {KIE_API_KEY}',
