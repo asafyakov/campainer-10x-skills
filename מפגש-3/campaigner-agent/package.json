@@ -1,0 +1,17 @@
+{
+  "name": "campaigner-agent",
+  "version": "0.1.0",
+  "description": "Local agent server for Campaigner 10X dashboard",
+  "type": "module",
+  "bin": {
+    "campaigner-agent": "./bin/cli.js"
+  },
+  "scripts": {
+    "start": "node bin/cli.js",
+    "dev": "node --watch bin/cli.js"
+  },
+  "dependencies": {
+    "express": "^5.1.0",
+    "cors": "^2.8.5"
+  }
+}
