@@ -126,26 +126,53 @@ Invoke-WebRequest -Uri "http://127.0.0.1:3141/health" -UseBasicParsing | Select-
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
-אם הכל ✅:
+אם הכל ✅ — המשך לשלב 9.
+אם יש ❌ — פרט מה לתקן, צעד אחד בכל פעם.
+
+---
+
+## שלב 9 — Auto-start (הפעלה אוטומטית עם הדלקת המחשב)
+
+מגדיר את ה-Agent להפעיל אוטומטית בכל פעם שהמחשב עולה.
+
+```powershell
+$AgentDir = (Get-Location).Path
+$NodeBin = (where.exe node | Select-Object -First 1).Trim()
+
+$Action = New-ScheduledTaskAction -Execute $NodeBin -Argument "$AgentDir\campaigner-agent\bin\cli.js" -WorkingDirectory $AgentDir
+$Trigger = New-ScheduledTaskTrigger -AtLogOn
+$Settings = New-ScheduledTaskSettingsSet -ExecutionTimeLimit 0 -RestartCount 3 -RestartInterval (New-TimeSpan -Minutes 1)
+
+Register-ScheduledTask -TaskName "Campaigner10X-Agent" -Action $Action -Trigger $Trigger -Settings $Settings -Force | Out-Null
+Write-Output "AUTO_START: OK"
+```
+
+- `AUTO_START: OK` → הכל מוכן. ה-Agent יעלה אוטומטית מעכשיו
+- שגיאה → כתוב: "Auto-start נכשל — הרץ `.\start.ps1` ידנית לפני עבודה"
+
+---
+
+## סיכום סופי
+
+הדפס:
+
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+✅/❌  Node.js:            [גרסה]
+✅/❌  Claude Code:         [נתיב]
+✅/❌  סקיל analytics:     מותקן
+✅/❌  campaigner-agent:   מותקן + רץ
+✅/❌  Agent Server:        localhost:3141
+✅/❌  Auto-start:          מופעל
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+
 > "הכל מוכן.
 >
 > פתח את הדשבורד בדפדפן (Chrome או Firefox):
 > https://agency-dashboard-10x.vercel.app
 >
-> הדשבורד יתחבר אוטומטית לקלוד קוד שלך תוך שניות.
-> השאר את הטרמינל פתוח בזמן העבודה."
-
-אם יש ❌ — פרט מה לתקן, צעד אחד בכל פעם.
-
----
-
-## שימוש לאחר ההתקנה
-
-| פקודה | מה עושה |
-|-------|---------|
-| `/analytics` | ניתוח קמפיין + המלצות |
-| `Start-Process node -ArgumentList "campaigner-agent\bin\cli.js" -NoNewWindow` | הפעלת Agent Server (כל פתיחה) |
-| `http://127.0.0.1:3141/health` | בדיקת סטטוס Agent |
+> הדשבורד יתחבר אוטומטית — עכשיו ובכל פעם שתדליק את המחשב."
 
 ---
 

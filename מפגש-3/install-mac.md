@@ -121,28 +121,75 @@ curl -s http://127.0.0.1:3141/health
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
-אם הכל ✅:
-> "הכל מוכן.
-> 
-> פתח את הדשבורד בדפדפן (Chrome או Firefox):
-> https://agency-dashboard-10x.vercel.app
-> 
-> הדשבורד יתחבר אוטומטית לקלוד קוד שלך תוך שניות.
-> השאר את הטרמינל פתוח בזמן העבודה."
-
+אם הכל ✅ — המשך לשלב 9.
 אם יש ❌ — פרט מה לתקן, צעד אחד בכל פעם.
 
 ---
 
-## שימוש לאחר ההתקנה
+## שלב 9 — Auto-start (הפעלה אוטומטית עם הדלקת המחשב)
 
-| פקודה | מה עושה |
-|-------|---------|
-| `/analytics` | ניתוח קמפיין + המלצות |
-| `node campaigner-agent/bin/cli.js &` | הפעלת Agent Server (כל פתיחה) |
-| `http://127.0.0.1:3141/health` | בדיקת סטטוס Agent |
+מגדיר את ה-Agent להפעיל אוטומטית בכל פעם שהמחשב עולה — לא צריך לזכור כלום.
 
-**טיפ:** הוסף לתחילת כל שיחת עבודה: `node campaigner-agent/bin/cli.js &` כדי שהדשבורד יהיה מחובר.
+```bash
+NODE_BIN=$(which node || echo "/usr/local/bin/node")
+AGENT_DIR="$(pwd)/campaigner-agent"
+PLIST="$HOME/Library/LaunchAgents/com.campaigner10x.agent.plist"
+
+cat > "$PLIST" << EOF
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.campaigner10x.agent</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>$NODE_BIN</string>
+        <string>$AGENT_DIR/bin/cli.js</string>
+    </array>
+    <key>RunAtLoad</key>
+    <true/>
+    <key>KeepAlive</key>
+    <true/>
+    <key>StandardOutPath</key>
+    <string>$HOME/.campaigner-agent.log</string>
+    <key>StandardErrorPath</key>
+    <string>$HOME/.campaigner-agent.log</string>
+</dict>
+</plist>
+EOF
+
+launchctl unload "$PLIST" 2>/dev/null
+launchctl load "$PLIST"
+echo "AUTO_START: OK"
+```
+
+- `AUTO_START: OK` → הכל מוכן. ה-Agent יעלה אוטומטית מעכשיו
+- שגיאה → כתוב: "Auto-start נכשל — הרץ `bash start.sh` ידנית לפני עבודה"
+
+---
+
+## סיכום סופי
+
+הדפס:
+
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+✅/❌  Node.js:            [גרסה]
+✅/❌  Claude Code:         [גרסה + נתיב]
+✅/❌  סקיל analytics:     מותקן
+✅/❌  campaigner-agent:   מותקן + רץ
+✅/❌  Agent Server:        localhost:3141
+✅/❌  Auto-start:          מופעל
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+
+> "הכל מוכן.
+>
+> פתח את הדשבורד בדפדפן (Chrome או Firefox):
+> https://agency-dashboard-10x.vercel.app
+>
+> הדשבורד יתחבר אוטומטית — עכשיו ובכל פעם שתדליק את המחשב."
 
 ---
 
