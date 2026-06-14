@@ -52,13 +52,17 @@ pwd
 ## שלב 4 — התקנת סקיל analytics
 
 ```bash
+ls analytics/SKILL.md 2>/dev/null && echo "SKILL_FOUND" || echo "SKILL_MISSING"
+```
+
+- `SKILL_MISSING` → עצור: "הקובץ analytics/SKILL.md לא נמצא. ודא שאתה נמצא בתיקיית מפגש-3 ושהורדת את כל ה-repo"
+- `SKILL_FOUND` → הרץ:
+
+```bash
 mkdir -p ~/.claude/skills/analytics
 cp analytics/SKILL.md ~/.claude/skills/analytics/SKILL.md
 echo "analytics: OK"
 ```
-
-- `analytics: OK` → המשך
-- שגיאה → בדוק שקובץ `analytics/SKILL.md` קיים בתיקייה הנוכחית
 
 ---
 
@@ -79,7 +83,11 @@ ls campaigner-agent/package.json 2>/dev/null && echo "FOUND" || echo "MISSING"
 lsof -ti :3141 2>/dev/null && kill $(lsof -ti :3141) && sleep 1 || true
 node campaigner-agent/bin/cli.js &
 sleep 3
+pgrep -f "campaigner-agent/bin/cli.js" && echo "AGENT_RUNNING" || echo "AGENT_FAILED"
 ```
+
+- `AGENT_RUNNING` → המשך
+- `AGENT_FAILED` → עצור: "השרת לא עלה. הרץ `node campaigner-agent/bin/cli.js` בלי & כדי לראות את השגיאה"
 
 ---
 
