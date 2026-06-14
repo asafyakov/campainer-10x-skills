@@ -83,18 +83,16 @@ Set-Location ..
 ## שלב 6 — ניקוי פורט + הפעלת Agent Server
 
 ```powershell
-$pid3141 = (netstat -ano | Select-String ":3141 .*LISTEN").ToString().Split()[-1]
-if ($pid3141) { Stop-Process -Id $pid3141 -Force -ErrorAction SilentlyContinue; Start-Sleep 1 }
+# ניקוי פורט 3141 אם תפוס
+$conn = Get-NetTCPConnection -LocalPort 3141 -ErrorAction SilentlyContinue
+if ($conn) { Stop-Process -Id $conn.OwningProcess -Force -ErrorAction SilentlyContinue; Start-Sleep 1 }
 
-Start-Process -FilePath "node" -ArgumentList "campaigner-agent\bin\cli.js" -NoNewWindow -PassThru
-Start-Sleep 3
-
-$agentProc = Get-Process node -ErrorAction SilentlyContinue | Where-Object { $_.CommandLine -like "*campaigner-agent*" }
-if ($agentProc) { Write-Output "AGENT_RUNNING" } else { Write-Output "AGENT_FAILED" }
+# הפעלת Agent Server ברקע
+Start-Process -FilePath "node" -ArgumentList "campaigner-agent\bin\cli.js" -WindowStyle Hidden
+Start-Sleep 4
 ```
 
-- `AGENT_RUNNING` → המשך
-- `AGENT_FAILED` → עצור: "השרת לא עלה. הרץ `node campaigner-agent\bin\cli.js` ישירות לראות את השגיאה"
+המשך לשלב 7 — הוא יוודא שהשרת עלה.
 
 ---
 
@@ -109,7 +107,7 @@ Invoke-WebRequest -Uri "http://127.0.0.1:3141/health" -UseBasicParsing | Select-
 - `"claude":{"ready":true}` → Claude Code מחובר
 - `"clientCount"` → כמה לקוחות נמצאו בתיקייה
 
-שגיאה / אין תגובה → עצור: "Agent Server לא עלה. בדוק שגיאות בטרמינל"
+שגיאה / אין תגובה → עצור: "Agent Server לא עלה. פתח PowerShell חדש, נווט לתיקיית מפגש-3, והרץ: `node campaigner-agent\bin\cli.js` (בלי WindowStyle Hidden) — כדי לראות את השגיאה המלאה"
 
 ---
 
