@@ -1,0 +1,7 @@
+node_modules/
+auth/
+media/
+feed.json
+sessions.json
+bot.log
+.DS_Store
