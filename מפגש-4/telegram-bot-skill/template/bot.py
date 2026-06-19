@@ -15,18 +15,25 @@ sys.path.insert(0, os.path.dirname(__file__))
 import config as cfg
 
 # --- בדיקת claude CLI ---
+# הוסף נתיבים נפוצים ל-PATH (nohup לא תמיד יורש PATH מלא)
+extra_paths = [
+    os.path.expanduser("~/.local/node/bin"),
+    "/usr/local/bin",
+    "/opt/homebrew/bin",
+]
+os.environ["PATH"] = ":".join(extra_paths) + ":" + os.environ.get("PATH", "")
+
 CLAUDE_BIN = shutil.which("claude")
 if not CLAUDE_BIN:
-    # חיפוש בנתיב של אפליקציית Claude
     import glob
     matches = sorted(glob.glob(os.path.expanduser(
         "~/Library/Application Support/Claude/claude-code/*/claude.app/Contents/MacOS/claude"
     )))
     if matches:
         CLAUDE_BIN = matches[-1]
-    else:
-        print("❌ Claude CLI לא נמצא. הרץ: npm install -g @anthropic-ai/claude-code")
-        sys.exit(1)
+if not CLAUDE_BIN:
+    print("❌ Claude CLI לא נמצא. הרץ: npm install -g @anthropic-ai/claude-code")
+    sys.exit(1)
 
 # --- State ---
 STATE_FILE = os.path.join(os.path.dirname(__file__), "state.json")
@@ -35,7 +42,10 @@ DEFAULT_DIR = os.path.expanduser("~")
 def load_state():
     try:
         with open(STATE_FILE) as f:
-            return json.load(f)
+            data = json.load(f)
+            # מרחיב ~ לנתיב אמיתי
+            data["current_dir"] = os.path.expanduser(data.get("current_dir", DEFAULT_DIR))
+            return data
     except Exception:
         return {"current_dir": DEFAULT_DIR, "awaiting_approval": False}
 
@@ -118,11 +128,11 @@ def handle_new(msg):
 def handle_project(msg):
     if not is_authorized(msg.from_user.id): return
     parts = msg.text.split(maxsplit=1)
-    projects_root = os.path.expanduser("~/Desktop/קלוד קוד ")
     projects = {"גלובלי": os.path.expanduser("~")}
-    if os.path.isdir(projects_root):
-        for name in sorted(os.listdir(projects_root)):
-            path = os.path.join(projects_root, name)
+    desktop = os.path.expanduser("~/Desktop")
+    if os.path.isdir(desktop):
+        for name in sorted(os.listdir(desktop)):
+            path = os.path.join(desktop, name)
             if os.path.isdir(path) and not name.startswith("."):
                 projects[name.strip()] = path
     if len(parts) == 1:

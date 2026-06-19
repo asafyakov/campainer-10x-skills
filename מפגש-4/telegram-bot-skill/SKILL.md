@@ -34,7 +34,7 @@ uname -s 2>/dev/null || echo "Windows"
 ```bash
 python3 --version
 ```
-- 3.9–3.12 ✅ ממשיכים
+- 3.9+ ✅ ממשיכים
 - חסר או ישן מ-3.9:
   ```bash
   # בדוק אם יש brew
@@ -47,7 +47,7 @@ python3 --version
 ```cmd
 python --version
 ```
-- 3.9–3.12 ✅ ממשיכים
+- 3.9+ ✅ ממשיכים
 - חסר: הגד למשתמש:
   > "❌ Python לא מותקן. בצע את הצעדים האלה:
   > 1. פתח https://python.org/downloads
@@ -158,8 +158,8 @@ AUTHORIZED_USER_ID = None
 **Mac:**
 ```bash
 cd ~/claude-telegram-bot
-source venv/bin/activate
-nohup python3 bot.py > bot.log 2>&1 &
+# הפעל עם Python של venv ישירות — לא python3 הכללי
+nohup ~/claude-telegram-bot/venv/bin/python3 ~/claude-telegram-bot/bot.py > ~/claude-telegram-bot/bot.log 2>&1 &
 echo "✅ הבוט פועל ברקע"
 
 # קיצור דרך בשולחן העבודה
