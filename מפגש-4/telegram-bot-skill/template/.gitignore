@@ -1,0 +1,6 @@
+venv/
+__pycache__/
+config.py
+state.json
+bot.log
+.DS_Store
